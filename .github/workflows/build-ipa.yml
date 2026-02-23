@@ -38,7 +38,9 @@ jobs:
           python-version: '3.11'
 
       - name: Install Python dependencies
-        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+        run: |
+          pip install numpy scipy
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
 
       - name: Download Silero model
         run: |
