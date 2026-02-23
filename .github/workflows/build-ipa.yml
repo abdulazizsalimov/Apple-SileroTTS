@@ -38,14 +38,11 @@ jobs:
           python-version: '3.11'
 
       - name: Install Python dependencies
-        run: pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
-
-      - name: Download Silero model
         run: |
-          chmod +x Scripts/download_model.sh
-          ./Scripts/download_model.sh
+          pip install numpy omegaconf
+          pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
 
-      - name: Trace model for mobile
+      - name: Download and prepare model for mobile
         run: python3 Scripts/trace_model.py
 
       - name: Install CocoaPods
