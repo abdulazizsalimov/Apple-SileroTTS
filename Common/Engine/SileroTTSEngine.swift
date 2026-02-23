@@ -30,27 +30,53 @@ final class SileroTTSEngine {
     private init() {}
 
     /// Initialize the engine by loading the model.
-    /// Call this when the app starts or when the audio unit allocates resources.
+    /// Call this when the audio unit allocates resources (NOT from the main app).
     func initialize() {
         guard !isInitialized else { return }
 
-        // Load the TorchScript model via LibTorch
-        guard let modelPath = Bundle.main.path(
-            forResource: Constants.modelFileName,
-            ofType: Constants.modelFileExtension
-        ) ?? Bundle(for: type(of: self)).path(
-            forResource: Constants.modelFileName,
-            ofType: Constants.modelFileExtension
-        ) else {
-            Log.error(type: .engine, "Could not find model file: \(Constants.modelFileName).\(Constants.modelFileExtension)")
+        // Search for the model in multiple bundle locations
+        // 1. Main bundle (for the app)
+        // 2. Bundle containing this class (for the extension)
+        // 3. Direct path in the bundle root
+        let modelName = Constants.modelFileName
+        let modelExt = Constants.modelFileExtension
+
+        var modelPath: String?
+
+        // Try the class bundle first (works for extensions)
+        let classBundle = Bundle(for: SileroModelBridge.self)
+        modelPath = classBundle.path(forResource: modelName, ofType: modelExt)
+
+        // Try main bundle
+        if modelPath == nil {
+            modelPath = Bundle.main.path(forResource: modelName, ofType: modelExt)
+        }
+
+        // Try direct path in bundle root
+        if modelPath == nil {
+            let directPath = classBundle.bundlePath + "/" + modelName + "." + modelExt
+            if FileManager.default.fileExists(atPath: directPath) {
+                modelPath = directPath
+            }
+        }
+
+        // Try direct path in main bundle root
+        if modelPath == nil {
+            let directPath = Bundle.main.bundlePath + "/" + modelName + "." + modelExt
+            if FileManager.default.fileExists(atPath: directPath) {
+                modelPath = directPath
+            }
+        }
+
+        guard let finalPath = modelPath else {
+            Log.error(type: .engine, "Could not find model file: \(modelName).\(modelExt)")
+            Log.error(type: .engine, "Searched in: \(classBundle.bundlePath) and \(Bundle.main.bundlePath)")
             return
         }
 
-        Log.info(type: .engine, "Loading model from: \(modelPath)")
+        Log.info(type: .engine, "Loading model from: \(finalPath)")
 
-        // NOTE: Actual LibTorch model loading is done via the Objective-C++ bridge.
-        // See SileroModelBridge.h/mm for the implementation.
-        let success = SileroModelBridge.shared.loadModel(atPath: modelPath)
+        let success = SileroModelBridge.shared.loadModel(atPath: finalPath)
         if success {
             isInitialized = true
             Log.info(type: .engine, "Model loaded successfully")

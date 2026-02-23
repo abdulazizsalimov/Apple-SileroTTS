@@ -1,8 +1,9 @@
 #import "SileroModelBridge.h"
 #import <LibTorch-Lite/LibTorch-Lite.h>
+#include <exception>
 
 @implementation SileroModelBridge {
-    torch::jit::mobile::Module _model;
+    std::unique_ptr<torch::jit::mobile::Module> _model;
     BOOL _loaded;
     dispatch_queue_t _inferenceQueue;
 }
@@ -30,20 +31,31 @@
 }
 
 - (BOOL)loadModelAtPath:(NSString *)path {
-    @try {
-        _model = torch::jit::_load_for_mobile(path.UTF8String);
-        _model.eval();
+    try {
+        _model = std::make_unique<torch::jit::mobile::Module>(
+            torch::jit::_load_for_mobile(path.UTF8String)
+        );
+        _model->eval();
         _loaded = YES;
         NSLog(@"[SileroModelBridge] Model loaded from: %@", path);
         return YES;
-    } @catch (NSException *exception) {
-        NSLog(@"[SileroModelBridge] Failed to load model: %@", exception.reason);
+    } catch (const c10::Error& e) {
+        NSLog(@"[SileroModelBridge] LibTorch error loading model: %s", e.what());
+        _loaded = NO;
+        return NO;
+    } catch (const std::exception& e) {
+        NSLog(@"[SileroModelBridge] C++ exception loading model: %s", e.what());
+        _loaded = NO;
+        return NO;
+    } catch (...) {
+        NSLog(@"[SileroModelBridge] Unknown exception loading model");
         _loaded = NO;
         return NO;
     }
 }
 
 - (void)unloadModel {
+    _model.reset();
     _loaded = NO;
     NSLog(@"[SileroModelBridge] Model unloaded");
 }
@@ -59,7 +71,13 @@
     __block NSArray<NSNumber *> *result = nil;
 
     dispatch_sync(_inferenceQueue, ^{
-        @try {
+        try {
+            if (!_model) {
+                NSLog(@"[SileroModelBridge] Model pointer is null");
+                result = nil;
+                return;
+            }
+
             // Create sequence tensor [1, seq_len]
             int seqLen = (int)tokens.count;
             auto sequenceTensor = torch::zeros({1, seqLen}, torch::kInt64);
@@ -78,7 +96,7 @@
             inputs.push_back(speakerTensor);
             inputs.push_back((int64_t)sampleRate);
 
-            auto output = _model.forward(inputs);
+            auto output = _model->forward(inputs);
 
             // The output can be a tensor or tuple - handle both cases
             at::Tensor audioTensor;
@@ -108,8 +126,14 @@
             result = [audioArray copy];
             NSLog(@"[SileroModelBridge] Synthesized %d samples", totalSamples);
 
-        } @catch (NSException *exception) {
-            NSLog(@"[SileroModelBridge] Inference failed: %@", exception.reason);
+        } catch (const c10::Error& e) {
+            NSLog(@"[SileroModelBridge] LibTorch inference error: %s", e.what());
+            result = nil;
+        } catch (const std::exception& e) {
+            NSLog(@"[SileroModelBridge] C++ inference error: %s", e.what());
+            result = nil;
+        } catch (...) {
+            NSLog(@"[SileroModelBridge] Unknown inference error");
             result = nil;
         }
     });

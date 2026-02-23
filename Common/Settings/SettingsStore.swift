@@ -13,6 +13,11 @@ final class SettingsStore {
 
     private init() {
         userDefaults = UserDefaults(suiteName: Constants.appGroupIdentifier)
+        // Ensure supported voices are populated on first access
+        // so the extension can find them even without launching the main app
+        if supportedVoices == nil {
+            updateSupportedVoices()
+        }
     }
 
     // MARK: - Enabled Voices

@@ -8,9 +8,6 @@ struct ContentView: View {
             VStack(spacing: 0) {
                 // Status bar
                 HStack {
-                    Circle()
-                        .fill(voiceManager.isEngineReady ? Color.green : Color.orange)
-                        .frame(width: 10, height: 10)
                     Text(voiceManager.statusMessage)
                         .font(.caption)
                         .foregroundColor(.secondary)
@@ -93,8 +90,8 @@ struct ContentView: View {
             }
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .onAppear {
-            voiceManager.initializeEngine()
-        }
+            .onAppear {
+                voiceManager.ensureVoicesRegistered()
+            }
     }
 }
