@@ -82,8 +82,19 @@ jobs:
 
       - name: Bundle model into archive
         run: |
-          APP_PATH=$(ls -d BuildOutput/SileroTTS.xcarchive/Products/Applications/*.app)
-          APPEX_PATH=$(ls -d "$APP_PATH"/PlugIns/*.appex 2>/dev/null || true)
+          echo "Archive structure:"
+          find BuildOutput/SileroTTS.xcarchive -name "*.app" -o -name "*.appex" 2>/dev/null | head -20
+          echo "---"
+          ls -R BuildOutput/SileroTTS.xcarchive/Products/ 2>/dev/null || true
+          echo "---"
+
+          # Find the .app bundle in the archive
+          APP_PATH=$(find BuildOutput/SileroTTS.xcarchive -name "*.app" -type d | head -1)
+          if [ -z "$APP_PATH" ]; then
+            echo "ERROR: No .app bundle found in archive"
+            find BuildOutput/SileroTTS.xcarchive -maxdepth 4 -type d
+            exit 1
+          fi
 
           echo "App path: $APP_PATH"
 
@@ -92,6 +103,7 @@ jobs:
           echo "Model copied to main app bundle"
 
           # Copy model to extension bundle if exists
+          APPEX_PATH=$(find "$APP_PATH" -name "*.appex" -type d 2>/dev/null | head -1)
           if [ -n "$APPEX_PATH" ] && [ -d "$APPEX_PATH" ]; then
             echo "Extension path: $APPEX_PATH"
             cp Models/silero_v5_ru.ptl "$APPEX_PATH/"
@@ -105,8 +117,9 @@ jobs:
 
       - name: Create unsigned IPA
         run: |
+          APP_PATH=$(find BuildOutput/SileroTTS.xcarchive -name "*.app" -type d | head -1)
           mkdir -p BuildOutput/Payload
-          cp -r BuildOutput/SileroTTS.xcarchive/Products/Applications/*.app BuildOutput/Payload/
+          cp -r "$APP_PATH" BuildOutput/Payload/
           cd BuildOutput
           zip -r SileroTTS-unsigned.ipa Payload
           rm -rf Payload
