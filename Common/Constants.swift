@@ -1,7 +1,6 @@
 import Foundation
 
 enum Constants {
-    static let appGroupIdentifier = "group.com.silero.tts"
     static let audioComponentSubtype = "sltx"
     static let audioComponentManufacturer = "SlTT"
     static let audioComponentName = "SileroTTS"

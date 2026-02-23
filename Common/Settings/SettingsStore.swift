@@ -1,39 +1,36 @@
 import Foundation
 import Combine
 
-/// Manages shared settings between the main app and the TTS extension.
-/// Uses UserDefaults with an App Group for cross-process communication.
+/// Manages settings for the main app UI.
+/// No App Group is used - the extension hardcodes all voices.
+/// The main app only uses local UserDefaults for its own UI state.
 final class SettingsStore {
 
     static let shared = SettingsStore()
 
-    private let userDefaults: UserDefaults?
+    private let userDefaults: UserDefaults
     private let enabledVoicesKey = "EnabledVoices"
-    private let supportedVoicesKey = "SupportedVoices"
 
     private init() {
-        userDefaults = UserDefaults(suiteName: Constants.appGroupIdentifier)
-        // Ensure supported voices are populated on first access
-        // so the extension can find them even without launching the main app
-        if supportedVoices == nil {
-            updateSupportedVoices()
-        }
+        userDefaults = UserDefaults.standard
     }
 
-    // MARK: - Enabled Voices
+    // MARK: - Enabled Voices (local UI state only)
 
-    /// Set of enabled voice identifiers (speaker raw values)
+    /// Set of enabled voice identifiers (speaker raw values).
+    /// This is used only for the main app UI display.
+    /// The extension always provides all voices to the system.
     var enabledVoiceIDs: Set<String> {
         get {
-            if let ids = userDefaults?.array(forKey: enabledVoicesKey) as? [String] {
+            if let ids = userDefaults.array(forKey: enabledVoicesKey) as? [String] {
                 return Set(ids)
             }
             // By default, all voices are enabled
             return Set(Constants.Speaker.allCases.map { $0.rawValue })
         }
         set {
-            userDefaults?.set(Array(newValue), forKey: enabledVoicesKey)
-            userDefaults?.synchronize()
+            userDefaults.set(Array(newValue), forKey: enabledVoicesKey)
+            userDefaults.synchronize()
         }
     }
 
@@ -52,40 +49,9 @@ final class SettingsStore {
         }
         enabledVoiceIDs = ids
     }
-
-    // MARK: - Supported Voices for Extension
-
-    /// The list of voices that should appear in the system voice picker.
-    /// Stored as JSON data.
-    var supportedVoices: [SileroVoiceInfo]? {
-        get {
-            guard let data = userDefaults?.data(forKey: supportedVoicesKey) else {
-                return nil
-            }
-            return try? JSONDecoder().decode([SileroVoiceInfo].self, from: data)
-        }
-        set {
-            if let newValue = newValue,
-               let data = try? JSONEncoder().encode(newValue) {
-                userDefaults?.set(data, forKey: supportedVoicesKey)
-            } else {
-                userDefaults?.removeObject(forKey: supportedVoicesKey)
-            }
-            userDefaults?.synchronize()
-        }
-    }
-
-    /// Update the supported voices list based on enabled voices.
-    func updateSupportedVoices() {
-        let enabled = enabledVoiceIDs
-        let voices = Constants.Speaker.allCases
-            .filter { enabled.contains($0.rawValue) }
-            .map { SileroVoiceInfo(speaker: $0) }
-        supportedVoices = voices
-    }
 }
 
-/// Serializable voice info for sharing between app and extension.
+/// Voice info structure
 struct SileroVoiceInfo: Codable, Hashable {
     let identifier: String
     let name: String

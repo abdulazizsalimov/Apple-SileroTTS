@@ -39,7 +39,6 @@ final class VoiceManager: ObservableObject {
         voices[index].isEnabled.toggle()
 
         settings.setVoiceEnabled(voice.speaker, enabled: voices[index].isEnabled)
-        settings.updateSupportedVoices()
 
         Log.info(type: .settings,
                  "Voice \(voice.speaker.rawValue) \(voices[index].isEnabled ? "enabled" : "disabled")")
@@ -51,7 +50,6 @@ final class VoiceManager: ObservableObject {
             voices[i].isEnabled = true
             settings.setVoiceEnabled(voices[i].speaker, enabled: true)
         }
-        settings.updateSupportedVoices()
     }
 
     /// Disable all voices
@@ -60,7 +58,6 @@ final class VoiceManager: ObservableObject {
             voices[i].isEnabled = false
             settings.setVoiceEnabled(voices[i].speaker, enabled: false)
         }
-        settings.updateSupportedVoices()
     }
 
     /// Preview a voice using system AVSpeechSynthesizer (no model loading needed)
@@ -97,11 +94,9 @@ final class VoiceManager: ObservableObject {
         isPlaying = false
     }
 
-    /// Ensure voices are registered in the system.
-    /// This does NOT load the model - the model is only loaded by the extension when synthesis is requested.
+    /// Notify system that our voices are available.
+    /// The extension hardcodes all voices, so this just triggers a system refresh.
     func ensureVoicesRegistered() {
-        settings.updateSupportedVoices()
-        // Notify the system that our voices are available
         AVSpeechSynthesisProviderVoice.updateSpeechVoices()
         statusMessage = "Голоса зарегистрированы"
     }

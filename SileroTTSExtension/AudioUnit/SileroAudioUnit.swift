@@ -65,19 +65,8 @@ public final class SileroAudioUnit: AVSpeechSynthesisProviderAudioUnit {
     }
 
     private var supportedVoices: [AVSpeechSynthesisProviderVoice] {
-        // Get enabled voices from shared settings
-        if let voiceInfos = SettingsStore.shared.supportedVoices {
-            return voiceInfos.map { info in
-                AVSpeechSynthesisProviderVoice(
-                    name: info.name,
-                    identifier: info.identifier,
-                    primaryLanguages: [info.languageCode],
-                    supportedLanguages: [info.languageCode]
-                )
-            }
-        }
-
-        // Default: return all voices
+        // All voices are always available - no App Group or shared settings needed.
+        // The model is bundled with the extension.
         return Constants.Speaker.allCases.map { speaker in
             AVSpeechSynthesisProviderVoice(
                 name: speaker.rawValue,
