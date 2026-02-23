@@ -1,0 +1,596 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10001 /* SileroTTSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20001; };
+		A10002 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20002; };
+		A10003 /* VoiceRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20003; };
+		A10004 /* VoiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20004; };
+		A10005 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20005; };
+		A10006 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20006; };
+		A10007 /* TextProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20007; };
+		A10008 /* DSPProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20008; };
+		A10009 /* SileroTTSEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20009; };
+		A10010 /* SileroModelBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A20010; };
+		A10011 /* SileroModelBridge+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20011; };
+		A10012 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20012; };
+		A10013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20013; };
+		A10020 /* SileroAudioUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20020; };
+		A10021 /* AudioUnitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20021; };
+		A10022 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20005; };
+		A10023 /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20006; };
+		A10024 /* TextProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20007; };
+		A10025 /* DSPProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20008; };
+		A10026 /* SileroTTSEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20009; };
+		A10027 /* SileroModelBridge.mm in Sources */ = {isa = PBXBuildFile; fileRef = A20010; };
+		A10028 /* SileroModelBridge+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20011; };
+		A10029 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20012; };
+		A10030 /* SileroTTSExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A30002; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A40001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A50001;
+			proxyType = 1;
+			remoteGlobalIDString = B10002;
+			remoteInfo = SileroTTSExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A60001 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A10030 /* SileroTTSExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		A20001 /* SileroTTSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SileroTTSApp.swift; sourceTree = "<group>"; };
+		A20002 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A20003 /* VoiceRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceRow.swift; sourceTree = "<group>"; };
+		A20004 /* VoiceManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoiceManager.swift; sourceTree = "<group>"; };
+		A20005 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		A20006 /* Logger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
+		A20007 /* TextProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextProcessor.swift; sourceTree = "<group>"; };
+		A20008 /* DSPProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DSPProcessor.swift; sourceTree = "<group>"; };
+		A20009 /* SileroTTSEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SileroTTSEngine.swift; sourceTree = "<group>"; };
+		A20010 /* SileroModelBridge.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SileroModelBridge.mm; sourceTree = "<group>"; };
+		A20011 /* SileroModelBridge+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SileroModelBridge+Swift.swift"; sourceTree = "<group>"; };
+		A20012 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		A20013 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20014 /* SileroModelBridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SileroModelBridge.h; sourceTree = "<group>"; };
+		A20015 /* SileroTTS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SileroTTS-Bridging-Header.h"; sourceTree = "<group>"; };
+		A20016 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20017 /* SileroTTS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SileroTTS.entitlements; sourceTree = "<group>"; };
+		A20020 /* SileroAudioUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SileroAudioUnit.swift; sourceTree = "<group>"; };
+		A20021 /* AudioUnitFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioUnitFactory.swift; sourceTree = "<group>"; };
+		A20022 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20023 /* SileroTTSExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SileroTTSExtension.entitlements; sourceTree = "<group>"; };
+		A30001 /* SileroTTS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SileroTTS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A30002 /* SileroTTSExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SileroTTSExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A70001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A70002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A80001 = {
+			isa = PBXGroup;
+			children = (
+				A80010 /* SileroTTS */,
+				A80020 /* SileroTTSExtension */,
+				A80030 /* Common */,
+				A80040 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A80010 /* SileroTTS */ = {
+			isa = PBXGroup;
+			children = (
+				A80011 /* Sources */,
+				A80014 /* Resources */,
+				A20016 /* Info.plist */,
+				A20017 /* SileroTTS.entitlements */,
+			);
+			path = SileroTTS;
+			sourceTree = "<group>";
+		};
+		A80011 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				A80012 /* App */,
+				A80013 /* Views */,
+				A80015 /* Models */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		A80012 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A20001 /* SileroTTSApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A80013 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20002 /* ContentView.swift */,
+				A20003 /* VoiceRow.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A80014 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A20013 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A80015 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A20004 /* VoiceManager.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A80020 /* SileroTTSExtension */ = {
+			isa = PBXGroup;
+			children = (
+				A80021 /* AudioUnit */,
+				A80022 /* AudioUnitFactory */,
+				A20022 /* Info.plist */,
+				A20023 /* SileroTTSExtension.entitlements */,
+			);
+			path = SileroTTSExtension;
+			sourceTree = "<group>";
+		};
+		A80021 /* AudioUnit */ = {
+			isa = PBXGroup;
+			children = (
+				A20020 /* SileroAudioUnit.swift */,
+			);
+			path = AudioUnit;
+			sourceTree = "<group>";
+		};
+		A80022 /* AudioUnitFactory */ = {
+			isa = PBXGroup;
+			children = (
+				A20021 /* AudioUnitFactory.swift */,
+			);
+			path = AudioUnitFactory;
+			sourceTree = "<group>";
+		};
+		A80030 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				A20005 /* Constants.swift */,
+				A80031 /* Engine */,
+				A80032 /* Settings */,
+				A80033 /* Utils */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		A80031 /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				A20007 /* TextProcessor.swift */,
+				A20008 /* DSPProcessor.swift */,
+				A20009 /* SileroTTSEngine.swift */,
+				A20014 /* SileroModelBridge.h */,
+				A20010 /* SileroModelBridge.mm */,
+				A20011 /* SileroModelBridge+Swift.swift */,
+				A20015 /* SileroTTS-Bridging-Header.h */,
+			);
+			path = Engine;
+			sourceTree = "<group>";
+		};
+		A80032 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A20012 /* SettingsStore.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		A80033 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				A20006 /* Logger.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		A80040 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A30001 /* SileroTTS.app */,
+				A30002 /* SileroTTSExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B10001 /* SileroTTS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B20001;
+			buildPhases = (
+				A70001 /* Frameworks */,
+				B30001 /* Sources */,
+				B40001 /* Resources */,
+				A60001 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B50001 /* PBXTargetDependency */,
+			);
+			name = SileroTTS;
+			productName = SileroTTS;
+			productReference = A30001;
+			productType = "com.apple.product-type.application";
+		};
+		B10002 /* SileroTTSExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B20002;
+			buildPhases = (
+				A70002 /* Frameworks */,
+				B30002 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SileroTTSExtension;
+			productName = SileroTTSExtension;
+			productReference = A30002;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A50001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					B10001 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+					B10002 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = B20003;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = ru;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				ru,
+				Base,
+			);
+			mainGroup = A80001;
+			productRefGroup = A80040;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B10001 /* SileroTTS */,
+				B10002 /* SileroTTSExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B40001 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10013 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B30001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10001 /* SileroTTSApp.swift in Sources */,
+				A10002 /* ContentView.swift in Sources */,
+				A10003 /* VoiceRow.swift in Sources */,
+				A10004 /* VoiceManager.swift in Sources */,
+				A10005 /* Constants.swift in Sources */,
+				A10006 /* Logger.swift in Sources */,
+				A10007 /* TextProcessor.swift in Sources */,
+				A10008 /* DSPProcessor.swift in Sources */,
+				A10009 /* SileroTTSEngine.swift in Sources */,
+				A10010 /* SileroModelBridge.mm in Sources */,
+				A10011 /* SileroModelBridge+Swift.swift in Sources */,
+				A10012 /* SettingsStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B30002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10020 /* SileroAudioUnit.swift in Sources */,
+				A10021 /* AudioUnitFactory.swift in Sources */,
+				A10022 /* Constants.swift in Sources */,
+				A10023 /* Logger.swift in Sources */,
+				A10024 /* TextProcessor.swift in Sources */,
+				A10025 /* DSPProcessor.swift in Sources */,
+				A10026 /* SileroTTSEngine.swift in Sources */,
+				A10027 /* SileroModelBridge.mm in Sources */,
+				A10028 /* SileroModelBridge+Swift.swift in Sources */,
+				A10029 /* SettingsStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B50001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B10002;
+			targetProxy = A40001;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		C10001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		C10002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C20001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_ENTITLEMENTS = SileroTTS/SileroTTS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SileroTTS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.silero.tts;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Common/Engine/SileroTTS-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C20002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_ENTITLEMENTS = SileroTTS/SileroTTS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SileroTTS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.silero.tts;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Common/Engine/SileroTTS-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		C30001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SileroTTSExtension/SileroTTSExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SileroTTSExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.silero.tts.extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Common/Engine/SileroTTS-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		C30002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = SileroTTSExtension/SileroTTSExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SileroTTSExtension/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.silero.tts.extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Common/Engine/SileroTTS-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B20001 /* Build configuration list for PBXNativeTarget "SileroTTS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C20001 /* Debug */,
+				C20002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B20002 /* Build configuration list for PBXNativeTarget "SileroTTSExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C30001 /* Debug */,
+				C30002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B20003 /* Build configuration list for PBXProject "SileroTTS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C10001 /* Debug */,
+				C10002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+	};
+	rootObject = A50001 /* Project object */;
+}
