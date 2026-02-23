@@ -53,7 +53,7 @@ jobs:
       - name: Install CocoaPods
         run: |
           gem install cocoapods
-          pod install
+          pod install --verbose
 
       - name: Add model to build
         run: |
@@ -61,6 +61,10 @@ jobs:
           # The model will be included as a resource in the archive
           mkdir -p SileroTTS/Resources/Models
           cp Models/silero_v5_ru.ptl SileroTTS/Resources/Models/
+
+      - name: List workspace schemes
+        run: |
+          xcodebuild -workspace SileroTTS.xcworkspace -list 2>&1 || true
 
       - name: Build and archive (iOS)
         run: |
@@ -73,7 +77,8 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
-            CODE_SIGN_ENTITLEMENTS=""
+            CODE_SIGN_ENTITLEMENTS="" \
+            2>&1 | tail -200
 
       - name: Bundle model into archive
         run: |

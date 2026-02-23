@@ -143,14 +143,16 @@ final class DSPProcessor {
 
             // Overlap-add
             let startIdx = t * hopLength
-            vDSP_vadd(output.advanced(by: startIdx), 1, timeDomain, 1,
-                       &output + startIdx, 1, vDSP_Length(winLength))
+            for i in 0..<winLength {
+                output[startIdx + i] += timeDomain[i]
+            }
 
             // Window envelope
             var windowSq = [Float](repeating: 0, count: winLength)
             vDSP_vsq(hannWindow, 1, &windowSq, 1, vDSP_Length(winLength))
-            vDSP_vadd(windowEnvelope.advanced(by: startIdx), 1, windowSq, 1,
-                       &windowEnvelope + startIdx, 1, vDSP_Length(winLength))
+            for i in 0..<winLength {
+                windowEnvelope[startIdx + i] += windowSq[i]
+            }
         }
 
         // Normalize by window envelope and trim padding

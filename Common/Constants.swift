@@ -8,7 +8,7 @@ enum Constants {
     static let audioComponentDescription = "Silero Text-to-Speech"
     static let supportedVoicesFileName = "SupportedVoices.json"
     static let modelFileName = "silero_v5_ru"
-    static let modelFileExtension = "jit"
+    static let modelFileExtension = "ptl"
     static let metadataFileName = "silero_metadata"
     static let dspParamsFileName = "silero_dsp_params"
 
