@@ -2,14 +2,15 @@
 """
 Prepare Silero TTS v5 Russian model for iOS mobile deployment.
 
-This script loads the Silero model via torch.hub and saves it
-in a format suitable for LibTorch Mobile on iOS.
+This script loads the Silero v5_ru model package, extracts the
+internal JIT ScriptModule, and saves it for LibTorch Mobile on iOS.
 
 Usage:
     python3 Scripts/trace_model.py
 
 Prerequisites:
-    pip install torch numpy omegaconf
+    pip install torch
+    Run ./Scripts/download_model.sh first to download v5_ru.pt
 """
 
 import os
@@ -17,6 +18,7 @@ import sys
 import torch
 
 MODEL_DIR = "Models"
+INPUT_MODEL = os.path.join(MODEL_DIR, "v5_ru.pt")
 OUTPUT_MODEL = os.path.join(MODEL_DIR, "silero_v5_ru.ptl")
 
 os.makedirs(MODEL_DIR, exist_ok=True)
@@ -26,41 +28,45 @@ def main():
     print("=== Silero TTS Model Preparation for iOS ===")
     print()
 
-    print("Loading Silero v5 Russian model via torch.hub...")
-    model, _ = torch.hub.load(
-        repo_or_dir='snakers4/silero-models',
-        model='silero_tts',
-        language='ru',
-        speaker='v5_ru'
-    )
-    model.eval()
+    if not os.path.exists(INPUT_MODEL):
+        print(f"Error: Model not found at {INPUT_MODEL}")
+        print("Run ./Scripts/download_model.sh first to download the model.")
+        sys.exit(1)
+
+    print(f"Loading model from {INPUT_MODEL}...")
+    package = torch.package.PackageImporter(INPUT_MODEL)
+    model = package.load_pickle("tts_models", "model")
 
     print("Model loaded successfully.")
     print(f"Available speakers: {model.speakers}")
+    print(f"Symbols: {model.symbols}")
     print()
 
-    # Test synthesis to verify model works
-    print("Testing model with sample text...")
-    test_audio = model.apply_tts(
-        text="Привет мир",
-        speaker="aidar",
-        sample_rate=24000
-    )
-    print(f"Test synthesis OK: {test_audio.shape[0]} samples generated")
+    # The Silero v5 model is a wrapper (TTSModelMultiAcc_v3) containing
+    # packages, each with JIT ScriptModule models inside.
+    # We extract the internal JIT model for LibTorch Mobile.
+    pkg = model.packages[0]
+    jit_model = pkg.models[0]
+
+    print(f"Extracted JIT model: {type(jit_model).__name__}")
+    print(f"Is ScriptModule: {isinstance(jit_model, torch.jit.ScriptModule)}")
     print()
 
-    # Save model for mobile deployment
+    # Try to save with mobile optimization (lite interpreter)
     print("Saving model for mobile deployment...")
+    saved = False
 
-    # The Silero model loaded via torch.hub is already a ScriptModule
-    # We can optimize it for mobile and save
     try:
-        optimized = torch.utils.mobile_optimizer.optimize_for_mobile(model)
+        from torch.utils.mobile_optimizer import optimize_for_mobile
+        optimized = optimize_for_mobile(jit_model)
         optimized._save_for_lite_interpreter(OUTPUT_MODEL)
         print("Saved optimized model (lite interpreter format)")
-    except Exception as e:
-        print(f"Mobile optimization failed ({e}), saving as standard JIT...")
-        torch.jit.save(model, OUTPUT_MODEL)
+        saved = True
+    except (ImportError, Exception) as e:
+        print(f"Mobile optimization unavailable ({e}), using standard JIT save...")
+
+    if not saved:
+        torch.jit.save(jit_model, OUTPUT_MODEL)
         print("Saved as standard JIT model")
 
     if os.path.exists(OUTPUT_MODEL):
