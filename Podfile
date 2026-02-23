@@ -6,10 +6,11 @@ install! 'cocoapods', :disable_input_output_paths => true
 target 'SileroTTS' do
   use_frameworks!
   pod 'LibTorch-Lite', '~> 1.13.0'
+end
 
-  target 'SileroTTSExtension' do
-    inherit! :search_paths
-  end
+target 'SileroTTSExtension' do
+  use_frameworks!
+  pod 'LibTorch-Lite', '~> 1.13.0'
 end
 
 post_install do |installer|
