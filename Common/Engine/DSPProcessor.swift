@@ -248,12 +248,15 @@ final class DSPProcessor {
 
         // Convolve with first filter only (channel 0)
         let filter = H[0]
-        for i in 0..<outputLen {
-            var sum: Float = 0
-            let startIdx = i * N
-            vDSP_dotpr(padded.advanced(by: startIdx), 1,
-                       filter, 1, &sum, vDSP_Length(taps + 1))
-            result[i] = sum
+        padded.withUnsafeBufferPointer { paddedBuf in
+            let paddedPtr = paddedBuf.baseAddress!
+            for i in 0..<outputLen {
+                var sum: Float = 0
+                let startIdx = i * N
+                vDSP_dotpr(paddedPtr + startIdx, 1,
+                           filter, 1, &sum, vDSP_Length(taps + 1))
+                result[i] = sum
+            }
         }
 
         // Clamp to [-1, 1]

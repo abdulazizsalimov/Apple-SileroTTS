@@ -3,11 +3,6 @@ import Foundation
 /// Swift-friendly extension for SileroModelBridge
 extension SileroModelBridge {
 
-    /// Load model from path (Swift-friendly wrapper)
-    func loadModel(atPath path: String) -> Bool {
-        return loadModelAtPath(path)
-    }
-
     /// Synthesize speech from token IDs
     /// - Parameters:
     ///   - tokens: Array of token IDs
