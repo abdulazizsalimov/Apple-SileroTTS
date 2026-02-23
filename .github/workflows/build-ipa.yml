@@ -1,0 +1,119 @@
+name: Build SileroTTS IPA
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      build_number:
+        description: 'Build number'
+        required: true
+        default: '1'
+
+jobs:
+  build:
+    runs-on: macos-15
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        run: |
+          # Use latest available Xcode
+          XCODE_PATH=$(ls -d /Applications/Xcode*.app 2>/dev/null | sort -V | tail -1)
+          if [ -n "$XCODE_PATH" ]; then
+            sudo xcode-select -s "$XCODE_PATH/Contents/Developer"
+          fi
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install torch torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Download Silero model
+        run: |
+          chmod +x Scripts/download_model.sh
+          ./Scripts/download_model.sh
+
+      - name: Trace model for mobile
+        run: python3 Scripts/trace_model.py
+
+      - name: Install CocoaPods
+        run: |
+          gem install cocoapods
+          pod install
+
+      - name: Add model to build
+        run: |
+          # Copy the traced model into both target bundles
+          # The model will be included as a resource in the archive
+          mkdir -p SileroTTS/Resources/Models
+          cp Models/silero_v5_ru.ptl SileroTTS/Resources/Models/
+
+      - name: Build and archive (iOS)
+        run: |
+          xcodebuild clean archive \
+            -workspace SileroTTS.xcworkspace \
+            -configuration Release \
+            -scheme SileroTTS \
+            -archivePath BuildOutput/SileroTTS.xcarchive \
+            -destination "generic/platform=iOS" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_ENTITLEMENTS=""
+
+      - name: Bundle model into archive
+        run: |
+          APP_PATH=$(ls -d BuildOutput/SileroTTS.xcarchive/Products/Applications/*.app)
+          APPEX_PATH=$(ls -d "$APP_PATH"/PlugIns/*.appex 2>/dev/null || true)
+
+          echo "App path: $APP_PATH"
+
+          # Copy model to main app bundle
+          cp Models/silero_v5_ru.ptl "$APP_PATH/"
+          echo "Model copied to main app bundle"
+
+          # Copy model to extension bundle if exists
+          if [ -n "$APPEX_PATH" ] && [ -d "$APPEX_PATH" ]; then
+            echo "Extension path: $APPEX_PATH"
+            cp Models/silero_v5_ru.ptl "$APPEX_PATH/"
+            echo "Model copied to extension bundle"
+          fi
+
+          echo "Archive contents:"
+          ls -la "$APP_PATH/"
+          echo "Total app size:"
+          du -sh "$APP_PATH"
+
+      - name: Create unsigned IPA
+        run: |
+          mkdir -p BuildOutput/Payload
+          cp -r BuildOutput/SileroTTS.xcarchive/Products/Applications/*.app BuildOutput/Payload/
+          cd BuildOutput
+          zip -r SileroTTS-unsigned.ipa Payload
+          rm -rf Payload
+          echo "IPA created:"
+          ls -lh SileroTTS-unsigned.ipa
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SileroTTS-unsigned-ipa
+          path: BuildOutput/SileroTTS-unsigned.ipa
+
+      - name: Upload xcarchive
+        uses: actions/upload-artifact@v4
+        with:
+          name: SileroTTS-xcarchive
+          path: BuildOutput/SileroTTS.xcarchive
