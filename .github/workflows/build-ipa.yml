@@ -68,6 +68,7 @@ jobs:
 
       - name: Build and archive (iOS)
         run: |
+          set -o pipefail
           xcodebuild clean archive \
             -workspace SileroTTS.xcworkspace \
             -configuration Release \
@@ -78,7 +79,16 @@ jobs:
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGN_ENTITLEMENTS="" \
-            2>&1 | tail -200
+            2>&1 | tee /tmp/xcodebuild.log | tail -300
+          echo "\n=== Build exit code: $? ==="
+
+      - name: Show build errors if any
+        if: failure()
+        run: |
+          echo "=== Last 50 lines of xcodebuild log ==="
+          tail -50 /tmp/xcodebuild.log 2>/dev/null || true
+          echo "=== Errors ==="
+          grep -i "error:" /tmp/xcodebuild.log 2>/dev/null | tail -20 || true
 
       - name: Bundle model into archive
         run: |
@@ -92,7 +102,10 @@ jobs:
           APP_PATH=$(find BuildOutput/SileroTTS.xcarchive -name "*.app" -type d | head -1)
           if [ -z "$APP_PATH" ]; then
             echo "ERROR: No .app bundle found in archive"
-            find BuildOutput/SileroTTS.xcarchive -maxdepth 4 -type d
+            echo "=== Full archive directory ==="
+            find BuildOutput/ -maxdepth 5 -type d 2>/dev/null || true
+            echo "=== xcodebuild errors ==="
+            grep -i "error:" /tmp/xcodebuild.log 2>/dev/null | tail -30 || true
             exit 1
           fi
 
